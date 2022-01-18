@@ -1,6 +1,6 @@
-name: template-tutorial
-title: Template Tutorial
-version: master
+name: managed-kafka-service-registry-workshop
+title: Streams for Apache Kafka with Service Registry Workshop
+version: main
 nav:
   - modules/ROOT/nav.adoc
 
