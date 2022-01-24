@@ -45,8 +45,12 @@ Although you can see Kafka instances created by other users in your organization
 To connect your applications or services to a Streams for Apache Kafka instance, you need to create a service account.
 
 . On the *Kafka Instances* overview page, select the *Options* icon (the three dots) for the Kafka instance you just created. Select *Connection*.
++
+image::rhosak-connection-details.png[]
 
 . Copy the *Bootstrap server* endpoint to a secure location. You will need this when connecting to your Kafka instance.
+
+. Copy the *Token endpoint URL* of the *SASL/OAUTHBEARER* authentication method to a secure location. You will need this URL when connecting to your Kafka instance.
 
 . Click *Create service account* to set up the service account. Enter a unique service account name and an optional description, and click *Create*.
 
