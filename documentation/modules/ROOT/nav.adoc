@@ -9,6 +9,7 @@
 ** xref:02-create-service-registry-instance.adoc#serviceregistry[Create an instance of OpenShift Service Registry]
 ** xref:02-create-service-registry-instance.adoc#serviceaccountpermissions[Set Permissions for a Service Account]
 ** xref:02-create-service-registry-instance.adoc#uploadartifact[Upload an artifact to Service Registry]
+** xref:02-create-service-registry-instance.adoc#versionmanagement[Schema version management in Service Registry]
 
 * xref:03-quarkus-app-with-kafka-service-registry.adoc[3. Use Quarkus applications with Streams for Apache Kafka and OpenShift Service Registry]
 ** xref:03-quarkus-app-with-kafka-service-registry.adoc#devsandboxaccess[Get access to the Developer Sandbox]

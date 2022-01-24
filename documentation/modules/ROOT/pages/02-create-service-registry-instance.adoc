@@ -109,3 +109,68 @@ On the right of the screen, you can click *Upload new version* to add a new arti
 You can click *Delete* to delete an artifact as needed.
 
 IMPORTANT: Deleting an artifact deletes the artifact and all of its versions, and cannot be undone. Artifact versions are immutable and cannot be deleted individually.
+
+[#versionmanagement]
+== Schema version management in Service Registry
+
+Schemas can evolve over time, and new versions of an artefact can be uploaded to OpenShift Service Registry. Within Service Registry you can define rules to manage the evolution of the artefact. For example you can define rules that govern the backward compatibility of a schema when a new version is uploaded. These rules can be defined per artifact or on a global level.
+
+. Open the `FullName` artifact in your instance of Service Registry.
+
+. Click the *Enable* button next to *Validity rule* in the *Content Rules* section.
++
+image::service-registry-artifact-validity-rule.png[]
++
+Select *Full* in the drop-down box.
+
+. Click the *Enable* button next to *Compatibility rule* in the *Content Rules* section. Select *Backwards* in the drop-down box.
++
+image::service-registry-artifact-compatibility-rule.png[]
+
+. Click *Upload new version* to upload a new version of the Avro schema. +
+The new version contains a new mandatory field, which breaks the backwards compatibility with the existing version. 
+
+. Paste the following contents in the *Upload Artifact Version* pop-up window:
++
+[.console-input]
+[source,json]
+----
+{
+"type": "record",
+"namespace": "com.example",
+"name": "FullName",
+"fields": [
+{ "name": "first", "type": "string" },
+{ "name": "middle", "type": "string" },
+{ "name": "last", "type": "string" }
+]}
+----
+. Click *Upload* to upload the new version.
+
+. Note that a *Invalid Content* popup window is shown, and the new version is not accepted. Click *Close* to close the error window.
++
+image::service-invalid-content.png[]
+
+. In order to fix the error, the new `middle` field must be made optional. Click *Upload new version* and paste the following contents in the *Upload Artifact Version* pop-up window:
++
+[.console-input]
+[source,json]
+----
+{
+"type": "record",
+"namespace": "com.example",
+"name": "FullName",
+"fields": [
+{ "name": "first", "type": "string" },
+{ "name": "middle", "type": ["null", "string"], "default": null },
+{ "name": "last", "type": "string" }
+]}
+----
++
+Notice that the type of the `middle` field is now `null` or `string`, with `null` as default value. This is the Avro way to mark a field as optional.
+
+. Click *Upload* to upload the new version.
+
+. The new version does not break the backwards compatibility rule, and is accepted.
++
+image::service-registry-avro-schema-version-2.png[]
