@@ -23,6 +23,18 @@ image::service-registry-instance-ready.png[]
 
 . When the instance _Status_ is _Ready_, you can start using this Service Registry instance. You can use the *Options* icon (three vertical dots) to view, connect to, or delete the instance as needed.
 
+. Click on the *Options* icon, and select *Connection*. This opens a pop-up window with the connection information to your service registry instance. 
++
+image::service-registry-connection.png[]
++
+OpenShift Service Registry provides 3 API's to connect applications to the service:
++
+* *Core Registry API* is the most powerful and works with Apicurio client libraries.
+* *Schema Registry compatibility API* provides compatibility with the Confluent Schema Registry API.
+* *CNCF Schema Registry API* provides compatibility with the CNCF specification.
+
+. Copy the *Core Registry API URL* to a secure location. This is the server endpoint that you’ll need later in this workshop to connect your applications to this Service Registry instance. 
+
 [#serviceaccountpermissions]
 == Set Permissions for a Service Account
 
