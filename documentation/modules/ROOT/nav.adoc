@@ -4,3 +4,8 @@
 ** xref:01-provision-kafka-instance.adoc#serviceaccount[Create a Service Account]
 ** xref:01-provision-kafka-instance.adoc#serviceaccountpermissions[Set Permissions for a Service Account]
 ** xref:01-provision-kafka-instance.adoc#topic[Create a Kafka Topic]
+
+* xref:02-create-service-registry-instance.adoc[2. Create a Service Registry instance]
+** xref:02-create-service-registry-instance.adoc#serviceregistry[Create an instance of OpenShift Service Registry]
+** xref:02-create-service-registry-instance.adoc#serviceaccountpermissions[Set Permissions for a Service Account]
+** xref:02-create-service-registry-instance.adoc#uploadartifact[Upload an artifact to Service Registry]

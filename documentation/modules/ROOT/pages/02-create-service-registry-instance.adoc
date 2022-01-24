@@ -1,0 +1,99 @@
+= Create a Service Registry instance
+
+OpenShift Service Registry is a managed cloud service which provides you with an instance of a schema registry, where you can store and manage different kind of schemas, including OpenAPI spec documents and Avro and Protobuf schemas.
+
+A Service Registry instance is an isolated virtual tenant in a multi-tenanted deployment with its own unique instance URL and configuration to connect to producer and consumer applications.
+
+[#serviceregistry]
+== Create an instance of OpenShift Service Registry
+
+. Go to https://console.redhat.com[console.redhat.com] and log in with your Red Hat account.
+
+. On the https://console.redhat.com[console.redhat.com] landing page, select *Application Services* from the menu on the left.
+
+. On the Application Services landing page, select *Service Registry → Service Registry instances*.
++
+image::service-registry-instances.png[]
+
+. On the Service Registry overview page, click the *Create Service Registry instance* button. Enter a unique name like `my-registry-service-instance` and click *Create* to start the creation process for your Service Registry instance. 
+
+. The new Service Registry instance is listed in the instances table. After a couple of seconds, your instance should be marked as ready. 
++
+image::service-registry-instance-ready.png[]
+
+. When the instance _Status_ is _Ready_, you can start using this Service Registry instance. You can use the *Options* icon (three vertical dots) to view, connect to, or delete the instance as needed.
+
+[#serviceaccountpermissions]
+== Set Permissions for a Service Account
+
+Just like Streams for Apache Kafka, OpenShift Service Registry uses service accounts and role-based access to manage interactions with the Service Registry instance. You created the service account you created in the previous lab to set the appropriate level of access to the Service Registry instance.
+
+. In the *Service Registry Instances* page of the web console, click the name of the Service Registry instance that you want the service account to access.
+
+. Click the *Access* tab to view the accounts and roles already assigned for this instance.
+
+. Click *Grant access* to assign a role to the service account.
+
+. In the *Account* field, select or enter the service account name that you want to assign the role to.
+
+. Select the *Role* that you want to assign to the account, for example, *Manager* for read and write access to this instance.
++
+image::service-registry-grant-access.png[]
+
+. Click *Save* to finish.
+
+. The new role is listed in the *Access Overview* page. On this page you can filter the roles by account or role name.
++
+image::service-registry-access.png[]
+
+[#uploadartifact]
+== Upload an artifact to Service Registry
+
+After you create a Service Registry instance, you can upload schema or API content to the instance. There are different ways to do so, through the Service Registry Rest API, or through the UI. 
+
+The following example shows uploading an Apache Avro schema for serializing and deserializing Kafka messages in client applications.
+
+. In the *Service Registry* instances page of the web console, select the Service Registry instance that you want to upload a schema to.
+
+. Click *Upload artifact* and complete the form to define the schema details:
+
+* *Group*: Enter an optional unique group name such as `my-org` to organize the artifact in a named collection. Each group contains a logically related set of schemas or API designs, typically managed by a single entity, belonging to a particular application or organization.
++
+NOTE: Specifying a group is optional when using the web console, and a default group is automatically created.
+
+* *ID*: Enter an optional unique ID for this artifact such as `my-ID`. If you do not specify a unique artifact ID, Service Registry generates one automatically as a UUID.
+
+* *Type*: Use the default *Auto-Detect* setting to automatically detect the artifact type, or select the artifact type from the drop-down, for example, Avro Schema or OpenAPI.
+
+* *Artifact*: Drag and drop or click *Browse* to upload a file. For this example, copy and paste the following simple Avro schema:
++
+[.console-input]
+[source,json]
+----
+{
+"type": "record",
+"namespace": "com.example",
+"name": "FullName",
+"fields": [
+{ "name": "first", "type": "string" },
+{ "name": "last", "type": "string" }
+]}
+----
+
+. Click *Upload* to complete the operation and display the new artifact details:
+
+* *Info*: Displays the artifact name, group, description, lifecycle status, when created, and last modified.
+
+* *Content*: Displays a read-only view of the full artifact content.
+
+* *Documentation*: (OpenAPI only): Displays automatically-generated REST API documentation.
+
+* *Content Rules*: Displays artifact content rules that you can enable and configure. You can configure a *Validity Rule* or *Compatibility Rule* by selecting the appropriate rule configuration from the drop-down. For details on supported rules, see the link:https://access.redhat.com/documentation/en-us/red_hat_openshift_service_registry/1[Red Hat OpenShift Service Registry user documentation].
+
+You can now use this schema to serialize and deserialize messages from Kafka client applications.
+
+On the right of the screen, you can click *Upload new version* to add a new artifact version.
+
+You can click *Delete* to delete an artifact as needed.
+
+IMPORTANT: Deleting an artifact deletes the artifact and all of its versions, and cannot be undone. Artifact versions are immutable and cannot be deleted individually.
