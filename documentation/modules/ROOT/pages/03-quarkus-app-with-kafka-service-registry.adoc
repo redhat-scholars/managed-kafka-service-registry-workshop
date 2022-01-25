@@ -89,7 +89,7 @@ image::crw-open-quarkus-terminal.png[]
 +
 In the popup window, select *quarkus-maven*. In the next popup, select *quarkus-service-registry-consumer* to open the terminal.
 +
-image::crw-open-terrminal.png[]
+image::crw-open-terminal.png[]
 
 . In the terminal window, change directory to the `consumer` directory.
 +
