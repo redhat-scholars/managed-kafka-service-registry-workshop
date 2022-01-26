@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Create a Service Registry instance :: Streams for Apache Kafka with Service Registry Workshop</title>
+    <link rel="canonical" href="https://redhat-scholars.github.io/managed-kafka-service-registry-workshop/managed-kafka-service-registry-workshop/main/02-create-service-registry-instance.html">
+    <link rel="prev" href="01-provision-kafka-instance.html">
+    <link rel="next" href="03-quarkus-app-with-kafka-service-registry.html">
+    <meta name="generator" content="Antora 3.0.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img src="../../_/img/NewRHDFullLogo_4-color_white-wordmark.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://redhat-scholars.github.io/managed-kafka-service-registry-workshop">Streams for Apache Kafka with Service Registry Workshop</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
+        <a class="navbar-item" href="https://developers.redhat.com/cheatsheets/" target="_blank">Cheat Sheets</a>
+        <a class="navbar-item" href="https://developers.redhat.com/events/" target="_blank">Upcoming Events</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/istio-tutorial/" target="_blank">Istio</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/tekton-tutorial/" target="_blank">Tekton</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="managed-kafka-service-registry-workshop" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="01-provision-kafka-instance.html">1. Provision a Kafka instance</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-provision-kafka-instance.html#redhataccount">Create a Red Hat Account</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-provision-kafka-instance.html#kafka">Provision a Kafka instance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-provision-kafka-instance.html#serviceaccount">Create a Service Account</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-provision-kafka-instance.html#serviceaccountpermissions">Set Permissions for a Service Account</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-provision-kafka-instance.html#topic">Create a Kafka Topic</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="02-create-service-registry-instance.html">2. Create a Service Registry instance</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#serviceregistry">Create an instance of OpenShift Service Registry</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#serviceaccountpermissions">Set Permissions for a Service Account</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#uploadartifact">Upload an artifact to Service Registry</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#versionmanagement">Schema version management in Service Registry</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="03-quarkus-app-with-kafka-service-registry.html">3. Use Quarkus applications with Streams for Apache Kafka and OpenShift Service Registry</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-quarkus-app-with-kafka-service-registry.html#devsandboxaccess">Get access to the Developer Sandbox</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-quarkus-app-with-kafka-service-registry.html#startcodereadyworkspaces">Start CodeReady Workspaces</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-quarkus-app-with-kafka-service-registry.html#runquarkusconsumerapp">Configure and run the Quarkus consumer application</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-quarkus-app-with-kafka-service-registry.html#runquarkusproducerapp">Configure and run the Quarkus producer application</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-quarkus-app-with-kafka-service-registry.html#inspectschema">Inspect the Avro schema in the Service Registry instance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="03-quarkus-app-with-kafka-service-registry.html#cleanup">Clean up</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Streams for Apache Kafka with Service Registry Workshop</a></li>
+    <li><a href="02-create-service-registry-instance.html">2. Create a Service Registry instance</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/redhat-scholars/managed-kafka-service-registry-workshop/edit/main/documentation/modules/ROOT/pages/02-create-service-registry-instance.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Create a Service Registry instance</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>OpenShift Service Registry is a managed cloud service which provides you with an instance of a schema registry, where you can store and manage different kind of schemas, including OpenAPI spec documents and Avro and Protobuf schemas.</p>
+</div>
+<div class="paragraph">
+<p>A Service Registry instance is an isolated virtual tenant in a multi-tenanted deployment with its own unique instance URL and configuration to connect to producer and consumer applications.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="serviceregistry"><a class="anchor" href="#serviceregistry"></a>Create an instance of OpenShift Service Registry</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Go to <a href="https://console.redhat.com">console.redhat.com</a> and log in with your Red Hat account.</p>
+</li>
+<li>
+<p>On the <a href="https://console.redhat.com">console.redhat.com</a> landing page, select <strong>Application Services</strong> from the menu on the left.</p>
+</li>
+<li>
+<p>On the Application Services landing page, select <strong>Service Registry → Service Registry instances</strong>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/service-registry-instances.png" alt="service registry instances">
+</div>
+</div>
+</li>
+<li>
+<p>On the Service Registry overview page, click the <strong>Create Service Registry instance</strong> button. Enter a unique name like <code>my-registry-service-instance</code> and click <strong>Create</strong> to start the creation process for your Service Registry instance.</p>
+</li>
+<li>
+<p>The new Service Registry instance is listed in the instances table. After a couple of seconds, your instance should be marked as ready.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/service-registry-instance-ready.png" alt="service registry instance ready">
+</div>
+</div>
+</li>
+<li>
+<p>When the instance <em>Status</em> is <em>Ready</em>, you can start using this Service Registry instance. You can use the <strong>Options</strong> icon (three vertical dots) to view, connect to, or delete the instance as needed.</p>
+</li>
+<li>
+<p>Click on the <strong>Options</strong> icon, and select <strong>Connection</strong>. This opens a pop-up window with the connection information to your service registry instance.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/service-registry-connection.png" alt="service registry connection">
+</div>
+</div>
+<div class="paragraph">
+<p>OpenShift Service Registry provides 3 API&#8217;s to connect applications to the service:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Core Registry API</strong> is the most powerful and works with Apicurio client libraries.</p>
+</li>
+<li>
+<p><strong>Schema Registry compatibility API</strong> provides compatibility with the Confluent Schema Registry API.</p>
+</li>
+<li>
+<p><strong>CNCF Schema Registry API</strong> provides compatibility with the CNCF specification.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Copy the <strong>Core Registry API URL</strong> to a secure location. This is the server endpoint that you’ll need later in this workshop to connect your applications to this Service Registry instance.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="serviceaccountpermissions"><a class="anchor" href="#serviceaccountpermissions"></a>Set Permissions for a Service Account</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Just like Streams for Apache Kafka, OpenShift Service Registry uses service accounts and role-based access to manage interactions with the Service Registry instance. You created the service account you created in the previous lab to set the appropriate level of access to the Service Registry instance.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the <strong>Service Registry Instances</strong> page of the web console, click the name of the Service Registry instance that you want the service account to access.</p>
+</li>
+<li>
+<p>Click the <strong>Access</strong> tab to view the accounts and roles already assigned for this instance.</p>
+</li>
+<li>
+<p>Click <strong>Grant access</strong> to assign a role to the service account.</p>
+</li>
+<li>
+<p>In the <strong>Account</strong> field, select or enter the service account name that you want to assign the role to.</p>
+</li>
+<li>
+<p>Select the <strong>Role</strong> that you want to assign to the account, for example, <strong>Manager</strong> for read and write access to this instance.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/service-registry-grant-access.png" alt="service registry grant access">
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>Save</strong> to finish.</p>
+</li>
+<li>
+<p>The new role is listed in the <strong>Access Overview</strong> page. On this page you can filter the roles by account or role name.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/service-registry-access.png" alt="service registry access">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="uploadartifact"><a class="anchor" href="#uploadartifact"></a>Upload an artifact to Service Registry</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After you create a Service Registry instance, you can upload schema or API content to the instance. There are different ways to do so, through the Service Registry Rest API, or through the UI.</p>
+</div>
+<div class="paragraph">
+<p>The following example shows uploading an Apache Avro schema for serializing and deserializing Kafka messages in client applications.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the <strong>Service Registry</strong> instances page of the web console, select the Service Registry instance that you want to upload a schema to.</p>
+</li>
+<li>
+<p>Click <strong>Upload artifact</strong> and complete the form to define the schema details:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Group</strong>: Enter an optional unique group name such as <code>my-org</code> to organize the artifact in a named collection. Each group contains a logically related set of schemas or API designs, typically managed by a single entity, belonging to a particular application or organization.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Specifying a group is optional when using the web console, and a default group is automatically created.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p><strong>ID</strong>: Enter an optional unique ID for this artifact such as <code>my-ID</code>. If you do not specify a unique artifact ID, Service Registry generates one automatically as a UUID.</p>
+</li>
+<li>
+<p><strong>Type</strong>: Use the default <strong>Auto-Detect</strong> setting to automatically detect the artifact type, or select the artifact type from the drop-down, for example, Avro Schema or OpenAPI.</p>
+</li>
+<li>
+<p><strong>Artifact</strong>: Drag and drop or click <strong>Browse</strong> to upload a file. For this example, copy and paste the following simple Avro schema:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+"type": "record",
+"namespace": "com.example",
+"name": "FullName",
+"fields": [
+{ "name": "first", "type": "string" },
+{ "name": "last", "type": "string" }
+]}</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Click <strong>Upload</strong> to complete the operation and display the new artifact details:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Info</strong>: Displays the artifact name, group, description, lifecycle status, when created, and last modified.</p>
+</li>
+<li>
+<p><strong>Content</strong>: Displays a read-only view of the full artifact content.</p>
+</li>
+<li>
+<p><strong>Documentation</strong>: (OpenAPI only): Displays automatically-generated REST API documentation.</p>
+</li>
+<li>
+<p><strong>Content Rules</strong>: Displays artifact content rules that you can enable and configure. You can configure a <strong>Validity Rule</strong> or <strong>Compatibility Rule</strong> by selecting the appropriate rule configuration from the drop-down. For details on supported rules, see the <a href="https://access.redhat.com/documentation/en-us/red_hat_openshift_service_registry/1">Red Hat OpenShift Service Registry user documentation</a>.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You can now use this schema to serialize and deserialize messages from Kafka client applications.</p>
+</div>
+<div class="paragraph">
+<p>On the right of the screen, you can click <strong>Upload new version</strong> to add a new artifact version.</p>
+</div>
+<div class="paragraph">
+<p>You can click <strong>Delete</strong> to delete an artifact as needed.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Deleting an artifact deletes the artifact and all of its versions, and cannot be undone. Artifact versions are immutable and cannot be deleted individually.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="versionmanagement"><a class="anchor" href="#versionmanagement"></a>Schema version management in Service Registry</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Schemas can evolve over time, and new versions of an artefact can be uploaded to OpenShift Service Registry. Within Service Registry you can define rules to manage the evolution of the artefact. For example you can define rules that govern the backward compatibility of a schema when a new version is uploaded. These rules can be defined per artifact or on a global level.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the <code>FullName</code> artifact in your instance of Service Registry.</p>
+</li>
+<li>
+<p>Click the <strong>Enable</strong> button next to <strong>Validity rule</strong> in the <strong>Content Rules</strong> section.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/service-registry-artifact-validity-rule.png" alt="service registry artifact validity rule">
+</div>
+</div>
+<div class="paragraph">
+<p>Select <strong>Full</strong> in the drop-down box.</p>
+</div>
+</li>
+<li>
+<p>Click the <strong>Enable</strong> button next to <strong>Compatibility rule</strong> in the <strong>Content Rules</strong> section. Select <strong>Backwards</strong> in the drop-down box.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/service-registry-artifact-compatibility-rule.png" alt="service registry artifact compatibility rule">
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>Upload new version</strong> to upload a new version of the Avro schema.<br>
+The new version contains a new mandatory field, which breaks the backwards compatibility with the existing version.</p>
+</li>
+<li>
+<p>Paste the following contents in the <strong>Upload Artifact Version</strong> pop-up window:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+"type": "record",
+"namespace": "com.example",
+"name": "FullName",
+"fields": [
+{ "name": "first", "type": "string" },
+{ "name": "middle", "type": "string" },
+{ "name": "last", "type": "string" }
+]}</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>Upload</strong> to upload the new version.</p>
+</li>
+<li>
+<p>Note that a <strong>Invalid Content</strong> popup window is shown, and the new version is not accepted. Click <strong>Close</strong> to close the error window.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/service-invalid-content.png" alt="service invalid content">
+</div>
+</div>
+</li>
+<li>
+<p>In order to fix the error, the new <code>middle</code> field must be made optional. Click <strong>Upload new version</strong> and paste the following contents in the <strong>Upload Artifact Version</strong> pop-up window:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+"type": "record",
+"namespace": "com.example",
+"name": "FullName",
+"fields": [
+{ "name": "first", "type": "string" },
+{ "name": "middle", "type": ["null", "string"], "default": null },
+{ "name": "last", "type": "string" }
+]}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice that the type of the <code>middle</code> field is now <code>null</code> or <code>string</code>, with <code>null</code> as default value. This is the Avro way to mark a field as optional.</p>
+</div>
+</li>
+<li>
+<p>Click <strong>Upload</strong> to upload the new version.</p>
+</li>
+<li>
+<p>The new version does not break the backwards compatibility rule, and is accepted.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/service-registry-avro-schema-version-2.png" alt="service registry avro schema version 2">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="01-provision-kafka-instance.html">1. Provision a Kafka instance</a></span>
+  <span class="next"><a href="03-quarkus-app-with-kafka-service-registry.html">3. Use Quarkus applications with Streams for Apache Kafka and OpenShift Service Registry</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://developers.redhat.com" target="_blank"></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

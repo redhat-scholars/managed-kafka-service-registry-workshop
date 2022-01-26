@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+<loc>https://redhat-scholars.github.io/managed-kafka-service-registry-workshop/managed-kafka-service-registry-workshop/main/01-provision-kafka-instance.html</loc>
+<lastmod>2022-01-26T12:05:30.627Z</lastmod>
+</url>
+<url>
+<loc>https://redhat-scholars.github.io/managed-kafka-service-registry-workshop/managed-kafka-service-registry-workshop/main/02-create-service-registry-instance.html</loc>
+<lastmod>2022-01-26T12:05:30.627Z</lastmod>
+</url>
+<url>
+<loc>https://redhat-scholars.github.io/managed-kafka-service-registry-workshop/managed-kafka-service-registry-workshop/main/03-quarkus-app-with-kafka-service-registry.html</loc>
+<lastmod>2022-01-26T12:05:30.627Z</lastmod>
+</url>
+<url>
+<loc>https://redhat-scholars.github.io/managed-kafka-service-registry-workshop/managed-kafka-service-registry-workshop/main/index.html</loc>
+<lastmod>2022-01-26T12:05:30.627Z</lastmod>
+</url>
+</urlset>

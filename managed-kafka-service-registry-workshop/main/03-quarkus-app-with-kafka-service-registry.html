@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Use Quarkus applications with Streams for Apache Kafka and OpenShift Service Registry :: Streams for Apache Kafka with Service Registry Workshop</title>
+    <link rel="canonical" href="https://redhat-scholars.github.io/managed-kafka-service-registry-workshop/managed-kafka-service-registry-workshop/main/03-quarkus-app-with-kafka-service-registry.html">
+    <link rel="prev" href="02-create-service-registry-instance.html">
+    <meta name="generator" content="Antora 3.0.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img src="../../_/img/NewRHDFullLogo_4-color_white-wordmark.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://redhat-scholars.github.io/managed-kafka-service-registry-workshop">Streams for Apache Kafka with Service Registry Workshop</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
+        <a class="navbar-item" href="https://developers.redhat.com/cheatsheets/" target="_blank">Cheat Sheets</a>
+        <a class="navbar-item" href="https://developers.redhat.com/events/" target="_blank">Upcoming Events</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/istio-tutorial/" target="_blank">Istio</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/tekton-tutorial/" target="_blank">Tekton</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="managed-kafka-service-registry-workshop" data-version="main">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="01-provision-kafka-instance.html">1. Provision a Kafka instance</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-provision-kafka-instance.html#redhataccount">Create a Red Hat Account</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-provision-kafka-instance.html#kafka">Provision a Kafka instance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-provision-kafka-instance.html#serviceaccount">Create a Service Account</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-provision-kafka-instance.html#serviceaccountpermissions">Set Permissions for a Service Account</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="01-provision-kafka-instance.html#topic">Create a Kafka Topic</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="02-create-service-registry-instance.html">2. Create a Service Registry instance</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-create-service-registry-instance.html#serviceregistry">Create an instance of OpenShift Service Registry</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-create-service-registry-instance.html#serviceaccountpermissions">Set Permissions for a Service Account</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-create-service-registry-instance.html#uploadartifact">Upload an artifact to Service Registry</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="02-create-service-registry-instance.html#versionmanagement">Schema version management in Service Registry</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="03-quarkus-app-with-kafka-service-registry.html">3. Use Quarkus applications with Streams for Apache Kafka and OpenShift Service Registry</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#devsandboxaccess">Get access to the Developer Sandbox</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#startcodereadyworkspaces">Start CodeReady Workspaces</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#runquarkusconsumerapp">Configure and run the Quarkus consumer application</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#runquarkusproducerapp">Configure and run the Quarkus producer application</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#inspectschema">Inspect the Avro schema in the Service Registry instance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#cleanup">Clean up</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Streams for Apache Kafka with Service Registry Workshop</a></li>
+    <li><a href="03-quarkus-app-with-kafka-service-registry.html">3. Use Quarkus applications with Streams for Apache Kafka and OpenShift Service Registry</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/redhat-scholars/managed-kafka-service-registry-workshop/edit/main/documentation/modules/ROOT/pages/03-quarkus-app-with-kafka-service-registry.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Use Quarkus applications with Streams for Apache Kafka and OpenShift Service Registry</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>As a developer of applications and services, you can connect Quarkus applications to Kafka instances in OpenShift Streams for Apache Kafka and Service Registry instances in OpenShift Service Registry. This makes it easy for development teams to store and reuse schemas in event streaming architectures.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://quarkus.io">Quarkus</a> is a Kubernetes-native Java framework made for Java virtual machines (JVMs) and native compilation, and optimized for serverless, cloud, and Kubernetes environments.</p>
+</div>
+<div class="paragraph">
+<p>Quarkus is designed to work with popular Java standards, frameworks, and libraries like Eclipse MicroProfile and Spring, as well as Apache Kafka, RESTEasy (JAX-RS), Hibernate ORM (JPA), Infinispan, Camel, and many more.</p>
+</div>
+<div class="paragraph">
+<p>In this workshop you use CodeReady Workspaces on the Developer Sandbox for Red Hat OpenShift to inspect and run the Quarkus applications.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="https://developers.redhat.com/developer-sandbox">Developer Sandbox for Red Hat OpenShift</a> provides you with a private OpenShift environment in a shared, multi-tenant OpenShift cluster that is pre-configured with a set of developer tools.</p>
+</div>
+<div class="paragraph">
+<p><a href="https://developers.redhat.com/products/codeready-workspaces/overview">CodeReady Workspaces</a> is an in-browser IDE that delivers consistent developer environments on Red Hat OpenShift.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="devsandboxaccess"><a class="anchor" href="#devsandboxaccess"></a>Get access to the Developer Sandbox</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You can spin up and access your Developer Sandbox with your Red Hat account (the same account you used to create an OpenShift Streams for Apache Kafka instance).</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In a browser window, go to <a href="https://developers.redhat.com/developer-sandbox/get-started">developers.redhat.com/developer-sandbox/get-started</a>.</p>
+</li>
+<li>
+<p>Click the <strong>Launch your Developer Sandbox for Red Hat OpenShift</strong> button.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/devsandbox-launch.png" alt="devsandbox launch">
+</div>
+</div>
+</li>
+<li>
+<p>If required, log in in with your Red Hat account username and password.</p>
+</li>
+<li>
+<p>If this is the first time you use the Developer Sandbox, your account needs to be set up. This includes a phone verification step to reduce the creation of fraudulent accounts. After this step it will take a couple of seconds to set up the sandbox.<br>
+Click the <strong>Start using your sandbox</strong> button to launch the sandbox.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/devsandbox-start.png" alt="devsandbox start">
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>DevSandbox</strong> to log into your sandbox.</p>
+</li>
+<li>
+<p>You are redirected to the <em>Developer Perspective</em> of your Sandbox OpenShift environment. Feel free to take or skip the <em>Get Started</em> tour.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/devsandbox-topology.png" alt="devsandbox topology">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="startcodereadyworkspaces"><a class="anchor" href="#startcodereadyworkspaces"></a>Start CodeReady Workspaces</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the Sandbox OpenShift web console, click on the <strong>Applications</strong> icon on the top menu. In the drop-down pane, select <strong>CodeReady Workspaces</strong> to launch your instance of CodeReady Workspaces.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/devsandbox-applications.png" alt="devsandbox applications">
+</div>
+</div>
+</li>
+<li>
+<p>If necessary, click <strong>DevSandbox</strong> to log in. The CodeReady Workspaces landing page opens in a new tab of your browser. Make sure the <strong>Create Workspace</strong> page is selected.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/devsandbox-create-workspace.png" alt="devsandbox create workspace">
+</div>
+</div>
+</li>
+<li>
+<p>In the <strong>Git Repo URL</strong> text box on the <strong>Quick Access</strong> tab, enter the following url to open the workspace for this lab:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">https://github.com/btison/quarkus-service-registry-quickstart-crw</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Click <strong>Create &amp; Open</strong> to create the workspace.</p>
+</li>
+<li>
+<p>The creation and startup of the workspace will take a few moments. Once the workspace is created and started, you are redirected to the main IDE page.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/crw-workspace.png" alt="crw workspace">
+</div>
+</div>
+</li>
+<li>
+<p>To complete the import of the workspace, click <strong>Yes, I trust</strong> in the popup box asking if you trust the authors of the github repo.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/crw-trust-repo.png" alt="crw trust repo">
+</div>
+</div>
+<div class="paragraph">
+<p>You can ignore the popup box asking to import the recommended extensions.</p>
+</div>
+<div class="paragraph">
+<p>Notice that your workspace contains two projects corresponding to the two Quarkus applications used in this workshop.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/crw-projects.png" alt="crw projects">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="runquarkusconsumerapp"><a class="anchor" href="#runquarkusconsumerapp"></a>Configure and run the Quarkus consumer application</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this workshop you will build and run the Quarkus application from a terminal window in CodeReady Workspaces. But before doing so, the Quarkus application needs to be configured.</p>
+</div>
+<div class="paragraph">
+<p>To enable your Quarkus applications to access a Kafka instance, configure the connection properties using the Kafka bootstrap server endpoint. To access a Service Registry instance, configure the registry endpoint connection property with the Core Registry API value.</p>
+</div>
+<div class="paragraph">
+<p>Access to the Service Registry and Kafka instances is managed using the same service account and SASL/OAUTHBEARER token endpoint. For Quarkus, you can configure all connection properties using the <code>application.properties</code> file. This example sets environment variables and references them in this file.</p>
+</div>
+<div class="paragraph">
+<p>Quarkus applications use <a href="https://github.com/eclipse/microprofile-reactive-messaging">MicroProfile Reactive Messaging</a> to produce messages to and consume messages from your Kafka instances in OpenShift Streams for Apache Kafka. For details on configuration options, see <a href="https://quarkus.io/guides/kafka">Using Apache Kafka with Reactive Messaging</a> in the Quarkus documentation.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In your CodeReady Workspace, open a terminal for the <code>quarkus-service-registry-consumer</code> application.<br>
+In the top menu, select <strong>Terminal &#8594; Open Terminal in specific container</strong>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/crw-open-quarkus-terminal.png" alt="crw open quarkus terminal">
+</div>
+</div>
+<div class="paragraph">
+<p>In the popup window, select <strong>quarkus-maven</strong>. In the next popup, select <strong>quarkus-service-registry-consumer</strong> to open the terminal.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/crw-open-terminal.png" alt="crw open terminal">
+</div>
+</div>
+</li>
+<li>
+<p>In the terminal window, change directory to the <code>consumer</code> directory.</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd consumer</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/crw-terminal.png" alt="crw terminal">
+</div>
+</div>
+</li>
+<li>
+<p>In the terminal, set the following environment variables to use your Kafka and Service Registry instances with the Quarkus application. Replace the values with your own server and credential information which you copied before from <a href="https://console.redhat.com">console.redhat.com</a>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>The &lt;bootstrap_server&gt; is the bootstrap server endpoint for your Kafka instance.</p>
+</li>
+<li>
+<p>The &lt;core_registry_url&gt; is the Core Registry API endpoint for your Service Registry instance.</p>
+</li>
+<li>
+<p>The &lt;oauth_token_endpoint_uri&gt; is the SASL/OAUTHBEARER token endpoint.</p>
+</li>
+<li>
+<p>The &lt;client_id&gt; and &lt;client_secret&gt; are the generated credentials for your service account.</p>
+<div class="paragraph">
+<p>Setting environment variables for server and credentials:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export BOOTSTRAP_SERVER=&lt;bootstrap_server&gt;
+export REGISTRY_URL=&lt;core_registry_url&gt;
+export OAUTH_TOKEN_ENDPOINT_URI=&lt;oauth_token_endpoint_uri&gt;
+export CLIENT_ID=&lt;client_id&gt;
+export CLIENT_SECRET=&lt;client_secret&gt;</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>In the Quarkus consumer source code, review the <code>/src/main/resources/application.properties</code> file in the <code>consumer</code> sub-folder to understand how the environment variables you set in the previous step are used. This example uses the <code>dev</code> configuration profile in the <code>application.properties</code> files.</p>
+</li>
+<li>
+<p>In the terminal, launch the Quarkus consumer application with the maven <code>quarkus:dev</code> goal. This will start the application in <a href="https://quarkus.io/guides/maven-tooling#dev-mode">Quarkus development mode</a>.</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mvn compile quarkus:dev</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>When the application is started up, a popup appears in the bottom right corner of the IDE window, prompting to open a browser tab to the application. Click <strong>Open In New Tab</strong> to open the tab.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/crw-open-browser-tab.png" alt="crw open browser tab">
+</div>
+</div>
+<div class="paragraph">
+<p>This opens a browser tab to the main application window of the consumer application. Once the consumer application starts to consume messages from the <code>quotes</code> topic they will appear in the browser window.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="runquarkusproducerapp"><a class="anchor" href="#runquarkusproducerapp"></a>Configure and run the Quarkus producer application</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In your CodeReady Workspace, open a new terminal for the <code>quarkus-service-registry-producer</code> application.<br>
+In the top menu, select <strong>Terminal &#8594; Open Terminal in specific container</strong>.
+In the popup window, select <strong>quarkus-maven</strong>. In the next popup, select <strong>quarkus-service-registry-producer</strong> to open the terminal.</p>
+</li>
+<li>
+<p>In the terminal window, change directory to the <code>producer</code> directory.</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd producer</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>In the terminal, set the following environment variables to use your Kafka and Service Registry instances with the Quarkus application. Replace the values with your own server and credential information which you copied before from <a href="https://console.redhat.com">console.redhat.com</a>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>The &lt;bootstrap_server&gt; is the bootstrap server endpoint for your Kafka instance.</p>
+</li>
+<li>
+<p>The &lt;core_registry_url&gt; is the Core Registry API endpoint for your Service Registry instance.</p>
+</li>
+<li>
+<p>The &lt;oauth_token_endpoint_uri&gt; is the SASL/OAUTHBEARER token endpoint.</p>
+</li>
+<li>
+<p>The &lt;client_id&gt; and &lt;client_secret&gt; are the generated credentials for your service account.</p>
+<div class="paragraph">
+<p>Setting environment variables for server and credentials:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export BOOTSTRAP_SERVER=&lt;bootstrap_server&gt;
+export REGISTRY_URL=&lt;core_registry_url&gt;
+export OAUTH_TOKEN_ENDPOINT_URI=&lt;oauth_token_endpoint_uri&gt;
+export CLIENT_ID=&lt;client_id&gt;
+export CLIENT_SECRET=&lt;client_secret&gt;</code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>In the Quarkus producer source code, review the <code>/src/main/resources/application.properties</code> file in the <code>producer</code> sub-folder to understand how the environment variables you set in the previous step are used. This example uses the <code>dev</code> configuration profile in the <code>application.properties</code> files.<br>
+Note the setting <code>mp.messaging.outgoing.quotes.apicurio.registry.auto-register=true</code>: this setting ensures that the Avro Schema is published to the Service Registry instance if the schema is not yet present in the instance.</p>
+</li>
+<li>
+<p>In the terminal, launch the Quarkus producer application with the maven <code>quarkus:dev</code> goal. This will start the application in <a href="https://quarkus.io/guides/maven-tooling#dev-mode">Quarkus development mode</a>.</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mvn compile quarkus:dev</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>When the application is started up, a popup appears in the bottom right corner of the IDE window, prompting to add a redirect to port 8081. You don&#8217;t need this for this workshop, so click <strong>no</strong>.</p>
+</li>
+<li>
+<p>Once the producer application is started, it produces a quote messages to the <code>quotes</code> topic on your Kafka instance every five seconds. These messages are consumed by the consumer application. The quotes appear in the browser tab pointing to the <code>quotes.html</code> page of the consumer application (you might need to refresh the page to actually see the quotes).</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/quarkus-consumer-app-quotes.png" alt="quarkus consumer app quotes">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="inspectschema"><a class="anchor" href="#inspectschema"></a>Inspect the Avro schema in the Service Registry instance</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Quarkus producer application published the Avro schema corresponding to the quotes Kafka messages to the Service Registry instance, from where it is downloaded by the consumer application.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In a browser window, navigate to your Service Registry instance in the <strong>Application Services &#8594; Service Registry &#8594; Service Registry Instances</strong> section of <a href="https://console.redhat.com">console.redhat.com</a>. Open the Service Registry instance.</p>
+</li>
+<li>
+<p>Check that the Service registry instance contains a schema corresponding to the Avro schema of the quotes Kafka messages.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/service-registry-avro-schema.png" alt="service registry avro schema">
+</div>
+</div>
+</li>
+<li>
+<p>Click on the schema name to inspect the metadata and the contents of the schema. Note that the schema is identical to the Avro schema in the source code of the producer application, in the <code>src/main/avro</code> directory.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cleanup"><a class="anchor" href="#cleanup"></a>Clean up</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the CodeReady Workspace IDE, stop the consumer and producer application by entering <code>Ctrl + C</code> in the application terminal.</p>
+</li>
+<li>
+<p>If you no longer require your instance of Service Registry and Streams for Apache Kafka, you can delete them from the <strong>Application Services</strong> section of <a href="https://console.redhat.com">console.redhat.com</a>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="02-create-service-registry-instance.html">2. Create a Service Registry instance</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://developers.redhat.com" target="_blank"></div>
+</footer>
+<script src="../../_/js/vendor/clipboard.js"></script>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
