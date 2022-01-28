@@ -38,7 +38,7 @@ OpenShift Service Registry provides 3 API's to connect applications to the servi
 [#serviceaccountpermissions]
 == Set Permissions for a Service Account
 
-Just like Streams for Apache Kafka, OpenShift Service Registry uses service accounts and role-based access to manage interactions with the Service Registry instance. You created the service account you created in the previous lab to set the appropriate level of access to the Service Registry instance.
+Just like Streams for Apache Kafka, OpenShift Service Registry uses service accounts and role-based access to manage interactions with the Service Registry instance. You use the service account you created in the previous lab to set the appropriate level of access to the Service Registry instance.
 
 . In the *Service Registry Instances* page of the web console, click the name of the Service Registry instance that you want the service account to access.
 
